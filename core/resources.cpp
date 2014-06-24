@@ -10,7 +10,7 @@ namespace res
 	};
 }
 
-static const char* path_to_data = "D:\\resources\\fallout\\pma\\";
+static const char* path_to_data = "resources\\";
 
 static res::element elements[res::LastResource - res::FirstResource + 1] =
 {
