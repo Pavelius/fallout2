@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="format_aaf.cpp" />
+    <ClCompile Include="format_frm.cpp" />
+    <ClCompile Include="format_map.cpp" />
+    <ClCompile Include="format_msg.cpp" />
+    <ClCompile Include="format_pro.cpp" />
+    <ClCompile Include="formats.cpp" />
+    <ClCompile Include="view.cpp" />
+    <ClCompile Include="msg_crit.cpp" />
+    <ClCompile Include="msg_items.cpp" />
+    <ClCompile Include="msg_misc.cpp" />
+    <ClCompile Include="msg_perk.cpp" />
+    <ClCompile Include="msg_scen.cpp" />
+    <ClCompile Include="msg_skill.cpp" />
+    <ClCompile Include="msg_tile.cpp" />
+    <ClCompile Include="msg_trait.cpp" />
+    <ClCompile Include="msg_wall.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="formats.h" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="premade.cpp" />
+    <ClCompile Include="tokens.cpp" />
+    <ClCompile Include="ui_charedit.cpp" />
+    <ClCompile Include="ui_game.cpp" />
+    <ClCompile Include="ui_inventory.cpp" />
+    <ClCompile Include="ui_main.cpp" />
+    <ClCompile Include="ui_newgame.cpp" />
+    <ClCompile Include="world.cpp" />
+    <ClCompile Include="creatures.cpp" />
+    <ClCompile Include="items.cpp" />
+    <ClCompile Include="map.cpp" />
+    <ClCompile Include="map_generate.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="route.cpp" />
+    <ClCompile Include="ui_worldmap.cpp" />
+  </ItemGroup>
+</Project>

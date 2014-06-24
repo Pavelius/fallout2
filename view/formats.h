@@ -1,0 +1,31 @@
+struct msgitem
+{
+	int						id;
+	const char*				text;
+};
+void						cnvaaf();
+void						cnvaaf(const char* name);
+void						cnvaaf(const char* dst, const char* src);
+void						cnvcrt();
+void						cnvcrt(const char* dst, const char* name);
+void						cnvitm(const char* url, const char* dst);
+void						cnvlst(const char* dst, const char* src);
+void						cnvlst();
+void						cnvmap(const char* dst, const char* src);
+void						cnvmsg(const char* dst, const char* url);
+void						cnvper(const char* dst, msgitem* ms, int b1, int b2, int d1);
+void						cnvtil(const char* dst, const char* url);
+void						cnvurl(const char* dst, const char* url, const char* ext, void(*cnv)(const char*, const char*));
+extern msgitem				msg_crit[];
+extern msgitem				msg_items[];
+extern msgitem				msg_misc[];
+extern msgitem				msg_tile[];
+extern msgitem				msg_perks[];
+extern msgitem				msg_scen[];
+extern msgitem				msg_skill[];
+extern msgitem				msg_traits[];
+extern msgitem				msg_wall[];
+const char*					szname(int id, msgitem* items);
+const char*					szcpp(const char* p, int count = -1);
+const char*					szdecode(char* text);
+const char*					szskip(const char* text, char sym);

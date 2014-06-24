@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="ai.h" />
+    <ClInclude Include="f2lib.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="controls.cpp" />
+    <ClCompile Include="crt.cpp" />
+    <ClCompile Include="resources.cpp" />
+    <ClCompile Include="win.cpp" />
+    <ClCompile Include="image.cpp" />
+    <ClCompile Include="messagebox.cpp" />
+    <ClCompile Include="text.cpp" />
+    <ClCompile Include="xrand.cpp" />
+    <ClCompile Include="bitmap.cpp" />
+    <ClCompile Include="stream.cpp" />
+    <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="color.cpp" />
+    <ClCompile Include="cursors.cpp" />
+    <ClCompile Include="arrays.cpp" />
+    <ClCompile Include="xsort.cpp" />
+    <ClCompile Include="zsprite.cpp" />
+  </ItemGroup>
+</Project>
