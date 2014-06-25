@@ -1,8 +1,8 @@
 #include "f2lib.h"
-#include "ai.h"
 
 int						map::cols;
 int						map::rows;
+point					map::camera; // current camera position in sceen coordinates
 static int				cols2;
 static int				rows2;
 const int				stx = 16; // logic horizontal part of tile
@@ -336,4 +336,17 @@ void ui::show::map(int ox, int oy, int mvc)
 			break;
 		}
 	}
+}
+
+bool map::execute(int id)
+{
+	switch(id)
+	{
+	case KeyLeft: map::camera.x -= 16; break;
+	case KeyRight: map::camera.x += 16; break;
+	case KeyUp: map::camera.y -= 16; break;
+	case KeyDown: map::camera.y += 16; break;
+	default: return false;
+	}
+	return true;
 }

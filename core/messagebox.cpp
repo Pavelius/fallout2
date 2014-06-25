@@ -1,5 +1,4 @@
 #include "f2lib.h"
-#include "ai.h"
 
 void ui::dialog::message(const char* string)
 {

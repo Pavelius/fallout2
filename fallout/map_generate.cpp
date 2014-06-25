@@ -1,5 +1,4 @@
 #include "f2lib.h"
-#include "ai.h"
 
 static void terrain(int i1, int width, int t1, int t2, int t3, int* ra = 0)
 {

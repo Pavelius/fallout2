@@ -1,5 +1,4 @@
 #include "f2lib.h"
-#include "ai.h"
 
 using namespace ui;
 
@@ -33,7 +32,8 @@ void console(int x1, int y1, int width, int height, const char* string)
 static void panel_action(int x, int y, int mid)
 {
 	rect rc = {x, y, x + res::gsx(res::INTRFACE, 32)-4, y + res::gsy(res::INTRFACE, 32)-4};
-	buttonf(rc.x1, rc.y1, Weapon, 32, 31, false, 0);
+	if(buttonf(rc.x1, rc.y1, Weapon, 32, 31, false, 0))
+		execute(Weapon);
 	if(hot::mouse.in(rc) && hot::pressed)
 	{
 		ui::show::item(rc.x1, rc.y1-2, rc.width(), rc.height(),
@@ -81,22 +81,28 @@ static void order_movement(int mid, int index, bool run)
 	creatures::set(mid, Direction, map::d2o(map::direction(pos, index)));
 }
 
+void ui::show::mapview(int index)
+{
+	ui::show::tiles(map::camera.x, map::camera.y, 26);
+	if(index!=-1)
+		ui::show::hexagon(map::camera.x, map::camera.y, index);
+	ui::show::begin();
+	ui::show::map(map::camera.x, map::camera.y, 26);
+	ui::show::end();
+	panel((width-res::gsx(res::INTRFACE, 16))/2, height - res::gsy(res::INTRFACE, 16), Player);
+}
+
 int ui::dialog::game()
 {
 	int index = -1;
 	int i1 = map::pos(40, 40);
-	int ox = map::t2x(i1)-width/2;
-	int oy = map::t2y(i1)-height/2;
+	map::camera.x = map::t2x(i1)-width/2;
+	map::camera.y = map::t2y(i1)-height/2;
 	rect rc = {0, 0, width, height - res::gsy(res::INTRFACE, 16)};
 	while(true)
 	{
-		hittest(ox, oy, rc, index);
-		ui::show::tiles(ox, oy, 26);
-		ui::show::hexagon(ox, oy, index);
-		ui::show::begin();
-		ui::show::map(ox, oy, 26);
-		ui::show::end();
-		panel((width-res::gsx(res::INTRFACE, 16))/2, height - res::gsy(res::INTRFACE, 16), Player);
+		hittest(map::camera.x, map::camera.y, rc, index);
+		ui::show::mapview(index);
 		text(580, 0, sznumber(index));
 		cursors::normal();
 		int id = input();
@@ -106,10 +112,6 @@ int ui::dialog::game()
 			return 0;
 		case Alpha + 'I':
 		case Inventory: ui::dialog::inventory(Player); break;
-		case KeyLeft: ox -= 16; break;
-		case KeyRight: ox += 16; break;
-		case KeyUp: oy -= 16; break;
-		case KeyDown: oy += 16; break;
 		case InputTimer: creatures::animate(); break;
 		case MouseLeft:
 			if(hot::mouse.in(rc) && hot::pressed)
@@ -118,6 +120,13 @@ int ui::dialog::game()
 		case MouseLeft|Shift:
 			if(hot::mouse.in(rc) && hot::pressed)
 				order_movement(Player, index, true);
+			break;
+		case Weapon:
+			ui::dialog::combat();
+			break;
+		default:
+			if(map::execute(id))
+				break;
 			break;
 		}
 	}

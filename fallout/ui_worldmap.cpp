@@ -1,5 +1,4 @@
 #include "f2lib.h"
-#include "ai.h"
 
 using namespace ui;
 const int dx = 350;

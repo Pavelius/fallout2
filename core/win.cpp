@@ -270,6 +270,21 @@ void ui::usepal(unsigned char* p)
 	}
 }
 
+void ui::inputex()
+{
+	MSG	msg;
+	hot::symbol = 0;
+	hot::key = 0;
+	InvalidateRect(hwnd, 0, 0);
+	UpdateWindow(hwnd);
+	while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))								        // Loop That Runs
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+		handle(hwnd, msg);
+	}
+}
+
 int ui::input()
 {
 	MSG	msg;

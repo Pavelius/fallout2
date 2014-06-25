@@ -1,5 +1,4 @@
 #include "f2lib.h"
-#include "ai.h"
 
 const unsigned Impassable = 0xFFF0;
 static unsigned short	path_stack[256*256];

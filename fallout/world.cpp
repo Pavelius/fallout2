@@ -1,5 +1,4 @@
 #include "f2lib.h"
-#include "ai.h"
 
 static unsigned	current_round;
 static char		console[256*256];

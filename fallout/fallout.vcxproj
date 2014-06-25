@@ -95,6 +95,7 @@
     <ClCompile Include="route.cpp" />
     <ClCompile Include="tokens.cpp" />
     <ClCompile Include="ui_charedit.cpp" />
+    <ClCompile Include="ui_combat.cpp" />
     <ClCompile Include="ui_game.cpp" />
     <ClCompile Include="ui_inventory.cpp" />
     <ClCompile Include="ui_main.cpp" />

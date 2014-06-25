@@ -16,5 +16,6 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="route.cpp" />
     <ClCompile Include="ui_worldmap.cpp" />
+    <ClCompile Include="ui_combat.cpp" />
   </ItemGroup>
 </Project>

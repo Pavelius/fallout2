@@ -8,7 +8,12 @@ void cursors::normal(bool save)
 {
 	if(save)
 		saveback();
-	image(hot::mouse.x, hot::mouse.y, res::INTRFACE, 267); // 267
+	image(hot::mouse.x, hot::mouse.y, res::INTRFACE, 267);
+}
+
+void cursors::wait()
+{
+	image(hot::mouse.x, hot::mouse.y, res::INTRFACE, 295, 0, hot::frame/2);
 }
 
 void cursors::arrow(int id)

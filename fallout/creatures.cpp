@@ -1,5 +1,4 @@
 #include "f2lib.h"
-#include "ai.h"
 
 static struct object_creature
 {
