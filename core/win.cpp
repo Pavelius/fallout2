@@ -504,6 +504,20 @@ namespace io
 		GetCurrentDirectory(MAX_PATH, path);
 	}
 
+	stream&	debug()
+	{
+		static struct writer : public stream
+		{
+			int read(void* p, int size) { return 0; }
+			int write(const void* p, int size)
+			{
+				OutputDebugString((const char*)p);
+				return size;
+			}
+			int seek(int pos, relocations rel) { return 0; }
+		} data;
+		return data;
+	}
 }
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowMode)

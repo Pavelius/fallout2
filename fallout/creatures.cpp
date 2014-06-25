@@ -287,8 +287,10 @@ int creatures::get(int mid, int id)
 		}
 	case PositionX: return objects[mid-FirstCreature].position.x;
 	case PositionY: return objects[mid-FirstCreature].position.y;
-	case Animation: return objects[mid-FirstCreature].frame;
-	case Action: return modify_by_weapon(objects[mid-FirstCreature].action, get(mid,Weapon));
+	case Action: return objects[mid-FirstCreature].action;
+	case AnimationCicle: return modify_by_weapon(objects[mid-FirstCreature].action, get(mid, Weapon));
+	case AnimationFrame: return objects[mid-FirstCreature].frame;
+	case AnimationStop: return objects[mid-FirstCreature].stop;
 	case Direction: return objects[mid-FirstCreature].direction;
 	case DamageNormal:
 	case DamageFire:
@@ -372,31 +374,28 @@ bool creatures::set(int mid, int id, int value)
 	object_creature& e = objects[mid-FirstCreature];
 	switch(id)
 	{
-	case Age:
-		e.attr[id] = world::get(Year) - value;
-		break;
+	case Age: e.attr[id] = world::get(Year) - value; break;
 	case Action:
 		if(e.action!=value)
 		{
-			set(mid, Animation, 0);
+			set(mid, AnimationFrame, 0);
 			e.action = value;
 			e.index = -1;
 		}
 		break;
-	case Animation:
+	case AnimationFrame:
 		e.frame = value;
 		e.stop = 0;
 		break;
+	case AnimationStop: e.stop = value; break;
+	case PositionX: e.position.x = value; break;
+	case PositionY: e.position.y = value; break;
 	case Position:
 		e.position.x = map::h2x(value);
 		e.position.y = map::h2y(value);
 		break;
-	case Direction:
-		e.direction = value%6;
-		break;
-	case Order:
-		e.index = value;
-		break;
+	case Direction: e.direction = value%6; break;
+	case Order: e.index = value; break;
 	default:
 		if(id>=FirstTraits && id<=LastTraits)
 		{
@@ -541,35 +540,39 @@ void creatures::damage(int mid, int weapon)
 
 void creatures::animate()
 {
+	ui::frame* f;
 	int ml = get(LastValid);
 	unsigned tm = (unsigned)timeticks();
 	for(int mid = FirstCreature; mid<=ml; mid++)
 	{
-		object_creature& a = objects[mid - FirstCreature];
-		if(a.stop>0)
+		if(creatures::get(mid, AnimationStop)>0)
 		{
-			a.stop--;
+			creatures::set(mid, AnimationStop, creatures::get(mid, AnimationStop) - 1);
 			continue;
 		}
 		res::token rs = (res::token)creatures::get(mid, Frame);
-		int ac = creatures::get(mid, Action);
-		int c1 = res::gframes(rs, ac) / 6;
+		int ac = creatures::get(mid, AnimationCicle);
+		int fr = creatures::get(mid, AnimationFrame);
+		int dr = creatures::get(mid, Direction);
+		int fc = res::gframes(rs, ac) / 6;
+		int x1 = creatures::get(mid, PositionX);
+		int y1 = creatures::get(mid, PositionY);
 		int p2, p3, x3, y3;
-		ui::frame* f;
-		switch(a.action)
+		switch(creatures::get(mid, Action))
 		{
 		case ActionWalk:
 			if((hot::frame%2)==0)
 				break;
 		case ActionRun:
-			f = ui::gframe(rs, ac, a.direction*c1 + a.frame);
-			a.position.x += f->mx;
-			a.position.y += f->my;
+			f = ui::gframe(rs, ac, dr*fc + fr);
+			x1 += f->mx; y1 += f->my;
+			creatures::set(mid, PositionX, x1);
+			creatures::set(mid, PositionY, y1);
 			p3 = creatures::get(mid, Position);
 			x3 = map::h2x(p3);
 			y3 = map::h2y(p3);
 			p2 = creatures::get(mid, Order);
-			if(iabs(x3-a.position.x)<=6 && iabs(y3-a.position.y)<=6)
+			if(iabs(x3-x1)<=6 && iabs(y3-y1)<=6)
 			{
 				if(p2==p3)
 				{
@@ -578,19 +581,20 @@ void creatures::animate()
 					break;
 				}
 				else
-					a.direction = map::d2o(map::direction(p3, p2));
+					creatures::set(mid, Direction, map::d2o(map::direction(p3, p2)));
 			}
-			if(++a.frame>=c1)
-				a.frame = 0;
+			creatures::set(mid, AnimationFrame, (++fr)%fc);
 			break;
 		case ActionStand:
 			if((hot::frame%2)==0)
 				break;
-			if(++a.frame>=c1)
+			if(++fr>=fc)
 			{
-				a.frame = 0;
-				a.stop = (1+(xrand()%8))*12;
+				creatures::set(mid, AnimationFrame, 0);
+				creatures::set(mid, AnimationStop, (1+(xrand()%8))*12);
 			}
+			else
+				creatures::set(mid, AnimationFrame, fr);
 			break;
 		}
 	}

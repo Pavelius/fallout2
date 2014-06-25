@@ -321,18 +321,18 @@ void ui::show::map(int ox, int oy, int mvc)
 		res::token rs = (res::token)creatures::get(mid, Frame);
 		int x2 = creatures::get(mid, PositionX) - ox;
 		int y2 = creatures::get(mid, PositionY) - oy;
-		int ac = creatures::get(mid, Action);
+		int ac = creatures::get(mid, AnimationCicle);
+		int fr = creatures::get(mid, AnimationFrame);
 		int dr = creatures::get(mid, Direction);
-		int fr = creatures::get(mid, Animation);
-		int c1 = res::gframes(rs, ac) / 6; // вычислим количество спрайтов на каждую анимацию
-		switch(ac)
+		int fc = res::gframes(rs, ac) / 6; // вычислим количество спрайтов на каждую анимацию
+		switch(creatures::get(mid, Action))
 		{
 		case ActionRun:
 		case ActionWalk:
-			zsprites.add({{x2, y2}, rs, ac, dr*c1 + fr, FIReal});
+			zsprites.add({{x2, y2}, rs, ac, dr*fc + fr, FIReal});
 			break;
 		default:
-			zsprites.add({{x2, y2}, rs, ac, dr*c1 + fr, 0});
+			zsprites.add({{x2, y2}, rs, ac, dr*fc + fr, 0});
 			break;
 		}
 	}

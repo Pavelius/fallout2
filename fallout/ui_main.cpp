@@ -28,13 +28,15 @@ static void test()
 	bool show_grid_hittes = false;
 	int x1 = map::h2x(0)+width/2;
 	int y1 = map::h2y(0)+height/2;
-	int an = 0;
 	ui::frame* f;
 	res::token rs = res::HFCMBT;
-	//int ac = 50 + (WeaponTypeSpear-FirstWeaponType)*13;
-	int ac = ActionWalk;
+	//int ac = ActionWalk;
+	int ac = 50 + (WeaponTypeRifle-FirstWeaponType)*13;
+	int dr = 2;
+	int fr = 0;
 	int fc = res::gframes(rs, ac)/6;
-	int dr = 3;
+	point pt1 = {x1, y1};
+	point pt2 = {map::h2x(10)+width/2, map::h2y(10)+height/2};
 	cursors::normal();
 	while(true)
 	{
@@ -86,11 +88,12 @@ static void test()
 		int i2 = map::xy2h(x1-width/2, y1-height/2);
 		int x2 = map::h2x(i2)+width/2;
 		int y2 = map::h2y(i2)+height/2;
-		image(x1, y1, rs, ac, FIReal, dr*fc + (an%fc));
+		image(x1, y1, rs, ac, FIReal, dr*fc + (fr%fc));
 		line(x2-4, y2, x2+4, y2, 0xD7);
 		line(x2, y2-4, x2, y2+4, 0xD7);
 		line(x1-4, y1, x1+4, y1, 0x47);
 		line(x1, y1-4, x1, y1+4, 0x47);
+		line(pt1.x, pt1.y, pt2.x, pt2.y, 0xD7);
 		cursors::normal(false);
 		int t1 = map::xy2t(hot::mouse.x - width/2, hot::mouse.y - height/2);
 		int t2 = map::xy2h(hot::mouse.x - width/2, hot::mouse.y - height/2);
@@ -108,10 +111,10 @@ static void test()
 		case InputTimer:
 			if((hot::frame%6)==0)
 			{
-				f = ui::gframe(rs, ac, dr*fc + (an%fc));
+				f = ui::gframe(rs, ac, dr*fc + (fr++%fc));
 				x1 += f->mx;
 				y1 += f->my;
-				an++;
+				io::debug() << f->mx << ", " << f->my << "\n";
 			}
 			break;
 		}

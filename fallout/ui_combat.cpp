@@ -8,7 +8,7 @@ static void begin()
 	while((hot::frame-frame)<20)
 	{
 		ui::show::mapview();
-		image(608, 477, res::INTRFACE, 104, 0, ((hot::frame-frame)/4)%5);
+		image(608, 477, res::INTRFACE, 104, 0, (hot::frame-frame)/4);
 		cursors::wait();
 		ui::input();
 	}
@@ -20,7 +20,7 @@ static void end()
 	while((hot::frame-frame)<20)
 	{
 		ui::show::mapview();
-		image(608, 477, res::INTRFACE, 104, 0, 5 - (((hot::frame-frame)/4)%5));
+		image(608, 477, res::INTRFACE, 104, 0, 4 - ((hot::frame-frame)/4));
 		cursors::wait();
 		ui::input();
 	}
@@ -30,9 +30,8 @@ static void moving(int player)
 {
 	while(true)
 	{
-		//text(580, 0, sznumber(index));
-		//debuging(0,0);
-		//text(580, 0, sznumber(index));
+		ui::show::mapview();
+		image(608, 477, res::INTRFACE, 104, 0, 4);
 		cursors::normal();
 		int id = input();
 		switch(id)
@@ -43,11 +42,11 @@ static void moving(int player)
 		case Inventory:
 			ui::dialog::inventory(Player);
 			break;
-		case KeyLeft: map::camera.x -= 16; break;
-		case KeyRight: map::camera.x += 16; break;
-		case KeyUp: map::camera.y -= 16; break;
-		case KeyDown: map::camera.y += 16; break;
 		case InputTimer: creatures::animate(); break;
+		default:
+			if(map::execute(id))
+				break;
+			break;
 		}
 	}
 }
@@ -55,5 +54,6 @@ static void moving(int player)
 void ui::dialog::combat()
 {
 	begin();
+	moving(Player);
 	end();
 }

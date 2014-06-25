@@ -102,7 +102,7 @@ enum tags {
 	// Materials
 	Glass, Metal, Plastic, Wood, Dirt, Stone, Cement, Leather,
 	// Animation
-	Frame, Action, Animation, Direction,
+	Frame, Action, AnimationCicle, AnimationFrame, Direction, AnimationStop,
 	Position, PositionX, PositionY, Order,
 	// Premades
 	NewCharacter, PremadeCombat, PremadeStealth, PremadeDiplomat,
@@ -345,6 +345,7 @@ namespace io
 	private:
 		void*				handle;
 	};
+	stream&					debug();
 }
 namespace ui
 {

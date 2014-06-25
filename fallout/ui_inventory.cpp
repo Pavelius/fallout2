@@ -17,8 +17,8 @@ static void preview(int x, int y, int mid)
 	clipping.y2 = y + 30;
 	res::token rs = (res::token)creatures::get(mid, Frame);
 	int ac = modify_by_weapon(ActionStand, creatures::get(mid, Weapon));
-	int ct = imax(res::gframes(rs, ac)/6, 1);
-	image(x, y, rs, ac, FINoCenter, ((hot::frame/2)%6)*ct);
+	int ct = res::gframes(rs, ac)/6;
+	image(x, y, rs, ac, FINoCenter, ((hot::frame/3)%6)*ct);
 }
 
 void ui::show::item(int x, int y, int sx, int sy, unsigned it, bool resize)
