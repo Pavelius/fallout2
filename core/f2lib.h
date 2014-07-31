@@ -301,6 +301,7 @@ namespace hot
 namespace cursors
 {
 	void					arrow(int id = -1); // Отрисовка курсора в виде стрелки.
+	void					cross();
 	void					background(); // Отрисовка фона, который был использован перед выводом курсора.
 	void					finger(); // Отрисовка курсора в виде пальца.
 	void					normal(bool save = true); // Отрисовка стандартного курсора.
@@ -448,6 +449,7 @@ namespace ui
 	frame*					gframe(res::token id, int animation, int frame = 0);
 	unsigned char			gcol(int n = 0);
 	void					highlight();
+	bool					hittest(int x, int y, res::token icn, int frame, unsigned flags = 0, int animation = 0);
 	void					image(int x, int y, res::token icn, int frame, unsigned flags = 0, int animation = 0);
 	int						input();
 	void					inputex();

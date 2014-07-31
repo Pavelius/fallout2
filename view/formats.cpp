@@ -1,5 +1,4 @@
 #include "f2lib.h"
-#include "ai.h"
 #include "formats.h"
 
 static unsigned char code[256] = {

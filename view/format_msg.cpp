@@ -1,5 +1,4 @@
 #include "f2lib.h"
-#include "ai.h"
 #include "formats.h"
 
 const char* szcpp(const char* p, int count)

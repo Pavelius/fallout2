@@ -180,6 +180,61 @@ static unsigned char* skip_v4(unsigned char* s, int h)
 	}
 }
 
+static bool blit_v3(unsigned char* dst, int dstw, const unsigned char* src, int srch, const unsigned char* s1, const unsigned char* s2)
+{
+	unsigned char* d1 = ptr(hot::mouse.x, hot::mouse.y);
+	unsigned char* d = dst;
+	while(true)
+	{
+		unsigned char c = *src++;
+		if(c==0)
+		{
+			dst += dstw;
+			s1 += dstw;
+			s2 += dstw;
+			d = dst;
+			if(--srch==0)
+				break;
+		}
+		else if(c<=0x7F)
+		{
+			// clip left invisible part
+			if(d+c<=s1 || d>s2)
+			{
+				d += c;
+				src += c;
+				continue;
+			}
+			else if(d<s1)
+			{
+				unsigned char sk = (s1-d);
+				d += sk;
+				src += sk;
+				c -= sk;
+			}
+			// visible part
+			if(d1>=d && d1<=d+c)
+				return true;
+			src += c;
+			d += c;
+			// right clip part
+			if(c)
+			{
+				d += c;
+				src += c;
+			}
+		}
+		else
+		{
+			if(c==0x80)
+				d += (*src++);
+			else
+				d += (c-0x80);
+		}
+	}
+	return false;
+}
+
 static void blit_v2(unsigned char* dst, int dstw, const unsigned char* src, int srch, const unsigned char* s1, const unsigned char* s2)
 {
 	unsigned char* d = dst;
@@ -529,6 +584,96 @@ void ui::image(int x, int y, res::token icn, int frame, unsigned flags, int anim
 		break;
 	default:
 		break;
+	}
+}
+
+bool ui::hittest(int x, int y, res::token icn, int frame, unsigned flags, int animation)
+{
+	int x2, y2;
+	sprite* p = (sprite*)res::get(icn);
+	if(!p)
+		return false;
+	if((unsigned)frame>=(unsigned)p->count)
+		frame = ((unsigned)frame) % p->count;
+	ui::cicle* c = &p->cicles[frame];
+	if(!c->count)
+		return false;
+	ui::frame* f = (ui::frame*)((char*)p + sizeof(res::header) + c->offset);
+	f = &f[animation%c->count];
+	if(!f->offset)
+		return false;
+	unsigned char* s = (unsigned char*)p + sizeof(res::header) + f->offset;
+	if(flags&FIReal)
+		x = x - f->sx/2 + f->mx;
+	else if((flags&FINoOffset)==0)
+	{
+		x = x - f->sx/2 + f->ox;
+		if((flags&FINoCenter)==0)
+			x += f->cx;
+	}
+	x2 = x + f->sx;
+	if(flags&FIMirrorV)
+	{
+		y2 = y;
+		if(flags&FIReal)
+			y2 = y + f->sy - f->my - f->cy;
+		else if((flags&FINoOffset)==0)
+		{
+			y2 = y + f->sy - f->oy;
+			if((flags&FINoCenter)==0)
+				y2 -= f->cy;
+		}
+		y = y2 - f->sy;
+	}
+	else
+	{
+		if(flags&FIReal)
+			y = y - f->sy + f->my + f->cy;
+		else if((flags&FINoOffset)==0)
+		{
+			y = y - f->sy + f->oy;
+			if((flags&FINoCenter)==0)
+				y += f->cy;
+		}
+		y2 = y + f->sy;
+	}
+	if(y2<clipping.y1 || y>clipping.y2 || x2<clipping.x1 || x>clipping.x2)
+		return false;
+	if(y<clipping.y1)
+	{
+		if((flags&FIMirrorV)==0)
+		{
+			switch(f->encode)
+			{
+			case RAW: s += (clipping.y1-y)*f->sx; break;
+			case RLE: s = skip_v4(s, clipping.y1-y); break;
+			default: break;
+			}
+		}
+		y = clipping.y1;
+	}
+	if(y2>clipping.y2)
+	{
+		if(flags&FIMirrorV)
+		{
+			switch(f->encode)
+			{
+			case RAW: s += (y2-clipping.y2)*f->sx; break;
+			case RLE: s = skip_v4(s, y2-clipping.y2); break;
+			default: break;
+			}
+		}
+		y2 = clipping.y2;
+	}
+	if(y>=y2)
+		return false;
+	int wd = (flags&FIMirrorV) ? -scanline : scanline;
+	int sy = (flags&FIMirrorV) ? y2-1 : y;
+	switch(f->encode)
+	{
+	case RAW: return false; break;
+	case RLE: return blit_v3(ptr(x, sy), wd, s, y2-y, ptr(clipping.x1, sy), ptr(clipping.x2, sy));
+	default: return false;
 	}
 }
 

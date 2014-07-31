@@ -2,13 +2,15 @@
 
 using namespace ui;
 
+const int wait_time = 3;
+
 static void begin()
 {
 	unsigned frame = hot::frame;
-	while((hot::frame-frame)<20)
+	while((hot::frame-frame)<(5*wait_time))
 	{
 		ui::show::mapview();
-		image(608, 477, res::INTRFACE, 104, 0, (hot::frame-frame)/4);
+		image(608, 477, res::INTRFACE, 104, 0, (hot::frame-frame)/wait_time);
 		cursors::wait();
 		ui::input();
 	}
@@ -17,10 +19,10 @@ static void begin()
 static void end()
 {
 	unsigned frame = hot::frame;
-	while((hot::frame-frame)<20)
+	while((hot::frame-frame)<(5*wait_time))
 	{
 		ui::show::mapview();
-		image(608, 477, res::INTRFACE, 104, 0, 4 - ((hot::frame-frame)/4));
+		image(608, 477, res::INTRFACE, 104, 0, 4 - ((hot::frame-frame)/wait_time));
 		cursors::wait();
 		ui::input();
 	}
@@ -32,7 +34,7 @@ static void moving(int player)
 	{
 		ui::show::mapview();
 		image(608, 477, res::INTRFACE, 104, 0, 4);
-		cursors::normal();
+		cursors::cross();
 		int id = input();
 		switch(id)
 		{

@@ -1,4 +1,3 @@
-#include "ai.h"
 #include "formats.h"
 
 msgitem msg_crit[] = {

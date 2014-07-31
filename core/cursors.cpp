@@ -11,6 +11,11 @@ void cursors::normal(bool save)
 	image(hot::mouse.x, hot::mouse.y, res::INTRFACE, 267);
 }
 
+void cursors::cross()
+{
+	image(hot::mouse.x, hot::mouse.y, res::INTRFACE, 251);
+}
+
 void cursors::wait()
 {
 	image(hot::mouse.x, hot::mouse.y, res::INTRFACE, 295, 0, hot::frame/2);
